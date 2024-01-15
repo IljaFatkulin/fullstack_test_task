@@ -63,7 +63,6 @@ class ProductRepositoryImpl extends AbstractRepository implements ProductReposit
 
     protected function convertDataToObject($data): Product
     {
-        // TODO: Add Gallery and Prices
         $subcategory = new Subcategory((int)$data['subcategory_id'], $data['subcategory']);
         $brand = new Brand((int)$data['brand_id'], $data['brand']);
 

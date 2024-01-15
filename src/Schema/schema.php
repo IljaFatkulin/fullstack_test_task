@@ -7,5 +7,5 @@ use GraphQL\Type\Schema;
 
 $schema = new Schema([
     'query' => new RootQuery(),
-//    'mutation' => new OrderMutation(),
+    'mutation' => new OrderMutation(),
 ]);

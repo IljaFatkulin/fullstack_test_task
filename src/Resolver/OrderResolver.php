@@ -17,8 +17,8 @@ class OrderResolver
 
     public function resolve($root, $args): array
     {
-        var_dump($args);
-        $this->orderService->createOrder($args['customer_email'], $args['products']);
-        return [];
+//        var_dump($args);die;
+        $response = $this->orderService->createOrder($args['customer_email'], $args['products']);
+        return $response;
     }
 }
