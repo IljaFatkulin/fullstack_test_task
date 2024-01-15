@@ -14,4 +14,6 @@ abstract class AbstractRepository
     {
         $this->connection = DB::getConnection();
     }
+
+    abstract protected function convertDataToObject($data);
 }

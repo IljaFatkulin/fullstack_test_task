@@ -9,15 +9,13 @@ class AttributeValue extends AbstractModel
 {
     /**
      * @param int|null $id
-     * @param Attribute|null $attribute
-     * @param Product|null $product
+     * @param string|null $code
      * @param string|null $displayValue
      * @param string|null $value
      */
     public function __construct(
         private ?int $id = null,
-        private ?Attribute $attribute = null,
-        private ?Product $product = null,
+        private ?string $code = null,
         private ?string $displayValue = null,
         private ?string $value = null
     ) {
@@ -41,35 +39,19 @@ class AttributeValue extends AbstractModel
     }
 
     /**
-     * @return Attribute|null
+     * @return string|null
      */
-    public function getAttribute(): ?Attribute
+    public function getCode(): ?string
     {
-        return $this->attribute;
+        return $this->code;
     }
 
     /**
-     * @param Attribute|null $attribute
+     * @param string|null $code
      */
-    public function setAttribute(?Attribute $attribute): void
+    public function setCode(?string $code): void
     {
-        $this->attribute = $attribute;
-    }
-
-    /**
-     * @return Product|null
-     */
-    public function getProduct(): ?Product
-    {
-        return $this->product;
-    }
-
-    /**
-     * @param Product|null $product
-     */
-    public function setProduct(?Product $product): void
-    {
-        $this->product = $product;
+        $this->code = $code;
     }
 
     /**
@@ -111,7 +93,7 @@ class AttributeValue extends AbstractModel
     {
         return [
             'id' => $this->id,
-            'attribute' => $this->attribute,
+            'code' => $this->code,
             'display_value' => $this->displayValue,
             'value' => $this->value
         ];

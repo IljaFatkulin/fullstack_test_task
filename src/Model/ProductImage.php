@@ -75,7 +75,7 @@ class ProductImage extends AbstractModel
     {
         return [
             'id' => $this->id,
-            'product' => $this->product,
+//            'product' => $this->product,
             'image_url' => $this->imageUrl
         ];
     }

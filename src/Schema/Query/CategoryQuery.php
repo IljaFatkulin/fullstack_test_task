@@ -13,16 +13,11 @@ class CategoryQuery extends ObjectType
     public function __construct()
     {
         parent::__construct([
-//            'name' => 'Query',
-//            'fields' => [
-//                'categories' => [
-                    'type' => Type::listOf(new CategoryType()),
-                    'args' => [
-                        'name' => Type::string(),
-                    ],
-                    'resolve' => [new CategoryResolver(), 'resolve']
-//                ]
-//            ]x
+            'type' => Type::listOf(new CategoryType()),
+            'args' => [
+                'name' => Type::string(),
+            ],
+            'resolve' => [new CategoryResolver(), 'resolve']
         ]);
     }
 }

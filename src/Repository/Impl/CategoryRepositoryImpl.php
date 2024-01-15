@@ -56,7 +56,7 @@ class CategoryRepositoryImpl extends AbstractRepository implements CategoryRepos
         return $this->convertDataToObject($result);
     }
 
-    private function convertDataToObject($data): Category
+    protected function convertDataToObject($data): Category
     {
         return new Category($data['id'], $data['name']);
     }

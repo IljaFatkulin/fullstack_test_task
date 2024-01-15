@@ -6,6 +6,8 @@ namespace App\Repository\Impl;
 use App\Core\AbstractRepository;
 use App\Model\Brand;
 use App\Model\Category\Subcategory;
+use App\Model\Currency;
+use App\Model\Price;
 use App\Model\Product;
 use App\Repository\ProductRepository;
 
@@ -21,7 +23,7 @@ class ProductRepositoryImpl extends AbstractRepository implements ProductReposit
             FROM products p 
             JOIN subcategories s
             ON s.id = p.subcategory_id
-            JOIN products_brands b 
+            JOIN brands b 
             ON b.id = p.brand_id
         ");
         $stmt->execute();
@@ -45,7 +47,7 @@ class ProductRepositoryImpl extends AbstractRepository implements ProductReposit
             FROM products p 
             JOIN subcategories s
             ON s.id = p.subcategory_id
-            JOIN products_brands b 
+            JOIN brands b 
             ON b.id = p.brand_id
             WHERE p.name = ?
         ");
@@ -59,7 +61,7 @@ class ProductRepositoryImpl extends AbstractRepository implements ProductReposit
         return $this->convertDataToObject($result);
     }
 
-    private function convertDataToObject($data): Product
+    protected function convertDataToObject($data): Product
     {
         // TODO: Add Gallery and Prices
         $subcategory = new Subcategory((int)$data['subcategory_id'], $data['subcategory']);

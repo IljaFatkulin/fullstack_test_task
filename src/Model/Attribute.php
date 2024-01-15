@@ -14,6 +14,7 @@ class Attribute extends AbstractModel
      */
     public function __construct(
         private ?int $id = null,
+        private ?string $code = null,
         private ?AttributeType $type = null,
         private ?string $name = null
     ) {
@@ -35,6 +36,24 @@ class Attribute extends AbstractModel
     {
         $this->id = $id;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param string|null $code
+     */
+    public function setCode(?string $code): void
+    {
+        $this->code = $code;
+    }
+
+
 
     /**
      * @return AttributeType|null

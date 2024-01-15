@@ -29,6 +29,38 @@ class Currency extends AbstractModel
         $this->id = $id;
     }
 
+    /**
+     * @return string|null
+     */
+    public function getLabel(): ?string
+    {
+        return $this->label;
+    }
+
+    /**
+     * @param string|null $label
+     */
+    public function setLabel(?string $label): void
+    {
+        $this->label = $label;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSymbol(): ?string
+    {
+        return $this->symbol;
+    }
+
+    /**
+     * @param string|null $symbol
+     */
+    public function setSymbol(?string $symbol): void
+    {
+        $this->symbol = $symbol;
+    }
+
     public function jsonSerialize(): mixed
     {
         return [

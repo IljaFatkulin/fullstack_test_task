@@ -16,8 +16,8 @@ class Price extends AbstractModel
     public function __construct(
         private ?int $id = null,
         private ?float $amount = null,
-        private ?Currency $currency,
-        private ?Product $product
+        private ?Currency $currency = null,
+        private ?Product $product = null
     ) {
     }
 
@@ -43,7 +43,7 @@ class Price extends AbstractModel
      */
     public function getAmount(): ?float
     {
-        return $this->amount;
+        return round($this->amount, 2);
     }
 
     /**

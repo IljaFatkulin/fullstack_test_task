@@ -203,7 +203,8 @@ class Product extends AbstractModel
             'in_stock' => $this->inStock,
             'description' => $this->description,
             'subcategory' => $this->subcategory,
-            'brand' => $this->brand
+            'brand' => $this->brand,
+            'prices' => $this->prices
         ];
     }
 }
