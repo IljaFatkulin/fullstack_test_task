@@ -71,11 +71,6 @@ class ProductRepositoryImpl extends AbstractRepository implements ProductReposit
      */
     public function findBySkuArray(array $skuList): array
     {
-//        $skus = 'huarache-x-stussy-le,jacket-canada-goosee';
-//        $skuArray = explode(',', $skus);
-//        var_dump($skuList);
-//        var_dump($skuArray);
-////        die;
         $placeholders = implode(',', array_fill(0, count($skuList), '?'));
         $stmt = $this->connection->prepare("
             SELECT p.*, s.name as subcategory, b.name as brand
@@ -87,6 +82,35 @@ class ProductRepositoryImpl extends AbstractRepository implements ProductReposit
             WHERE p.sku IN ($placeholders)
         ");
         $stmt->execute($skuList);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $products = [];
+        foreach ($result as $product) {
+            $products[] = $this->convertDataToObject($product);
+        }
+        return $products;
+    }
+
+    /**
+     * @param string $categoryName
+     * @return Product[]
+     */
+    public function findByCategory(string $categoryName): array
+    {
+        $stmt = $this->connection->prepare("
+            SELECT p.*, s.name as subcategory, r.name as root_category, b.name as brand
+            FROM products p 
+            JOIN subcategories s
+                ON s.id = p.subcategory_id
+            JOIN brands b 
+                ON b.id = p.brand_id
+            JOIN root_categories r
+                ON r.id = s.root_category_id
+            WHERE s.name = :subcategory OR r.name = :root_category
+        ");
+        $stmt->bindParam(":subcategory", $categoryName);
+        $stmt->bindParam(":root_category", $categoryName);
+        $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         $products = [];

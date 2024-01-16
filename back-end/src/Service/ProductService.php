@@ -23,4 +23,10 @@ interface ProductService
      * @return Product[]
      */
     public function findBySkuArray(array $skuList): array;
+
+    /**
+     * @param string $categoryName
+     * @return Product[]
+     */
+    public function findByCategory(string $categoryName): array;
 }

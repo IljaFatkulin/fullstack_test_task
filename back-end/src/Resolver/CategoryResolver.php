@@ -32,9 +32,9 @@ class CategoryResolver
 
     /**
      * @param $name
-     * @return array|null
+     * @return array
      */
-    public function findByName($name): ?array
+    private function findByName($name): array
     {
         $category = $this->categoryService->findByName($name);
         if(!$category) {
@@ -44,9 +44,9 @@ class CategoryResolver
     }
 
     /**
-     * @return array|null
+     * @return array
      */
-    public function findAll(): ?array
+    private function findAll(): array
     {
         $categories = $this->categoryService->findAll();
 

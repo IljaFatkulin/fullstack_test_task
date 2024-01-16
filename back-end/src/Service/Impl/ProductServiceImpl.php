@@ -38,4 +38,9 @@ class ProductServiceImpl implements ProductService
     {
         return $this->productRepository->findBySkuArray($skuList);
     }
+
+    public function findByCategory(string $categoryName): array
+    {
+        return $this->productRepository->findByCategory($categoryName);
+    }
 }

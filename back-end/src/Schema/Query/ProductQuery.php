@@ -16,6 +16,7 @@ class ProductQuery extends ObjectType
             'type' => Type::listOf(new ProductType()),
             'args' => [
                 'id' => Type::string(),
+                'categoryName' => Type::string(),
             ],
             'resolve' => [new ProductResolver(), 'resolve'],
         ]);

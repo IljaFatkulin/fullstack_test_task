@@ -23,9 +23,12 @@ class ProductResolver
      */
     public function resolve($root, $args): array
     {
-        $id = $args['id'] ?? null;
-        if($id) {
-            return $this->findById($id);
+        if(isset($args['id'])) {
+            return $this->findById($args['id']);
+        }
+
+        if(isset($args['categoryName'])) {
+            return $this->findByCategory($args['categoryName']);
         }
 
         return $this->findAll();
@@ -57,6 +60,21 @@ class ProductResolver
             return [];
         }
         return array($this->convertObjectToResponse($product[0]));
+    }
+
+    /**
+     * @param string $categoryName
+     * @return array
+     */
+    private function findByCategory(string $categoryName): array
+    {
+        $products = $this->productService->findByCategory($categoryName);
+
+        $response = [];
+        foreach ($products as $product) {
+            $response[] = $this->convertObjectToResponse($product);
+        }
+        return $response;
     }
 
     /**
