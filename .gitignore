@@ -1,3 +1,4 @@
 back-end/.env
 .idea/
 back-end/vendor/
+front-end/node_modules

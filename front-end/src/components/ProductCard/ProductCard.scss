@@ -1,0 +1,19 @@
+.ProductCard {
+  width: 386px;
+  height: 444px;
+  padding: 16px;
+
+  &-imageContainer {
+    width: 354px;
+    height: 330px;
+
+    & img {
+      width: 354px;
+      height: 330px;
+    }
+  }
+
+  &-info {
+
+  }
+}

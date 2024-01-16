@@ -1,0 +1,14 @@
+.Category-title {
+  align-self: start;
+}
+.Category-title p {
+  font-size: 42px;
+}
+.Category-products {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 40px;
+  row-gap: 100px;
+}
+
+/*# sourceMappingURL=Category.css.map */

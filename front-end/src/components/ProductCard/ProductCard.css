@@ -1,0 +1,15 @@
+.ProductCard {
+  width: 386px;
+  height: 444px;
+  padding: 16px;
+}
+.ProductCard-imageContainer {
+  width: 354px;
+  height: 330px;
+}
+.ProductCard-imageContainer img {
+  width: 354px;
+  height: 330px;
+}
+
+/*# sourceMappingURL=ProductCard.css.map */
