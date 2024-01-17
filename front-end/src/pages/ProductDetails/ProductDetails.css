@@ -1,0 +1,120 @@
+.ProductDetails {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid black;
+}
+.ProductDetails-gallery {
+  border: 1px solid black;
+  width: 700px;
+  height: 480px;
+  display: flex;
+  flex-direction: row;
+  margin-right: 110px;
+}
+.ProductDetails-gallery-images {
+  border: 1px solid green;
+  display: flex;
+  flex-direction: column;
+}
+.ProductDetails-gallery-images img {
+  border: 1px solid red;
+  max-width: 80px;
+  max-height: 80px;
+  margin-bottom: 20px;
+}
+.ProductDetails-gallery-images img:last-child {
+  margin-top: 0;
+}
+.ProductDetails-gallery-selectedImage {
+  margin-left: 40px;
+  border: 1px solid green;
+  width: 575px;
+  height: 480px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+.ProductDetails-gallery-selectedImage img {
+  border: 1px solid red;
+  max-width: 575px;
+  max-height: 480px;
+}
+.ProductDetails-gallery-selectedImage-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  background: rgba(0, 0, 0, 0.7294117647);
+  cursor: pointer;
+  user-select: none;
+}
+.ProductDetails-gallery-selectedImage-arrow_left {
+  left: 0;
+}
+.ProductDetails-gallery-selectedImage-arrow_right {
+  right: 0;
+}
+.ProductDetails-gallery-selectedImage-arrow img {
+  border: 0;
+}
+.ProductDetails-info {
+  border: 1px solid yellow;
+  width: 300px;
+}
+.ProductDetails-info-attributeTitle {
+  font-weight: 700;
+  font-size: 18px;
+}
+.ProductDetails-info-name {
+  margin-top: 0;
+  font-size: 30px;
+  font-weight: 600;
+}
+.ProductDetails-info-attributes-attribute-items {
+  display: flex;
+}
+.ProductDetails-info-attributes-attribute-items-item_swatch {
+  height: 35px;
+  width: 35px;
+}
+.ProductDetails-info-attributes-attribute-items-item_text {
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 45px;
+  min-width: 60px;
+  margin-right: 12px;
+}
+.ProductDetails-info-price {
+  font-weight: 700;
+  font-size: 24px;
+  display: flex;
+}
+.ProductDetails-info-price-amount {
+  margin-top: 3px;
+}
+.ProductDetails-info-button {
+  width: 100%;
+  height: 52px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #5ECE7B;
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 16px;
+  user-select: none;
+  cursor: pointer;
+  transition: 0.4s;
+}
+.ProductDetails-info-button:hover {
+  background: #489f5e;
+}
+
+/*# sourceMappingURL=ProductDetails.css.map */

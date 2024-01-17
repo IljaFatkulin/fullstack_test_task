@@ -1,0 +1,158 @@
+@import "../../styles/variables";
+
+.ProductDetails {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid black;
+
+  &-gallery {
+    border: 1px solid black;
+    width:700px;
+    height: 480px;
+    display: flex;
+    flex-direction: row;
+    margin-right: 110px;
+
+    &-images {
+      border: 1px solid green;
+      display: flex;
+      flex-direction: column;
+      //display: flex;
+      //justify-content: center;
+      //align-items: center;
+
+      & img {
+        border: 1px solid red;
+        max-width: 80px;
+        max-height: 80px;
+        margin-bottom: 20px;
+      }
+
+      & img:last-child {
+        margin-top: 0;
+      }
+    }
+
+    &-selectedImage {
+      margin-left: 40px;
+      border: 1px solid green;
+      width: 575px;
+      height: 480px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+
+      & img {
+        border: 1px solid red;
+        max-width: 575px;
+        //width: 575px;
+        max-height: 480px;
+        //height: 480px;
+      }
+
+      &-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 32px;
+        height: 32px;
+        background: #000000BA;
+        cursor: pointer;
+        user-select: none;
+
+        &_left {
+          left: 0;
+        }
+
+        &_right {
+          right: 0;
+        }
+
+        & img {
+          border: 0;
+        }
+      }
+    }
+  }
+
+  &-info {
+    border: 1px solid yellow;
+    width: 300px;
+
+    &-attributeTitle {
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    &-name {
+      margin-top: 0;
+      font-size: 30px;
+      font-weight: 600;
+    }
+
+    &-attributes {
+
+      &-attribute {
+
+        &-items {
+          display: flex;
+
+          &-item {
+
+            &_swatch {
+              height: 35px;
+              width: 35px;
+            }
+
+            &_text {
+              border: 1px solid black;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 45px;
+              min-width: 60px;
+              margin-right: 12px;
+            }
+          }
+        }
+      }
+    }
+
+    &-price {
+      font-weight: 700;
+      font-size: 24px;
+      display: flex;
+
+      &-amount {
+        margin-top: 3px;
+      }
+    }
+
+    &-button {
+      width: 100%;
+      height: 52px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: $color-primary;
+      color: $color-white;
+      font-weight: 600;
+      font-size: 16px;
+      user-select: none;
+      cursor: pointer;
+      transition: 0.4s;
+
+      &:hover {
+        background: $color-primary_hover;
+      }
+    }
+
+    &-description {
+
+    }
+  }
+}

@@ -17,7 +17,13 @@ const CATEGORY_QUERY = gql`
 const Header = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { data, loading, error } = useQuery(CATEGORY_QUERY);
+    const { data, loading, error } = useQuery(CATEGORY_QUERY, {
+        onCompleted: data => {
+            if(window.location.href === 'http://localhost:3000/') {
+                handleCategoryChange(data.categories[0].name)
+            }
+        }
+    });
     const [selectedCategory, setSelectedCategory] = useState(null);
 
     useEffect(() => {
@@ -63,7 +69,7 @@ const Header = () => {
 
             <div className="Header-cart">
                 <div className="Header-cart-img">
-                    <img src="/images/cart.svg" alt="Cart"/>
+                    <img src="/images/cart-black.svg" alt="Cart"/>
                 </div>
             </div>
         </div>
