@@ -30,6 +30,7 @@
 }
 .Header-cart {
   margin-left: auto;
+  padding-top: 5px;
 }
 .Header-cart-img {
   cursor: pointer;

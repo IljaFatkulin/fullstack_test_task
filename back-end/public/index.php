@@ -20,5 +20,3 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
 include ('./graphql.php');
-//$a = new \App\Resolver\ProductResolver();
-//var_dump($a->resolve([],['categoryName'=>'tech']));

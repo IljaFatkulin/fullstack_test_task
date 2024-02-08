@@ -5,6 +5,7 @@ import {setLoading} from "../../redux/actions/loaderActions";
 
 import './Header.css';
 import {useNavigate} from "react-router-dom";
+import Cart from "../Cart/Cart";
 
 const CATEGORY_QUERY = gql`
   {
@@ -14,7 +15,7 @@ const CATEGORY_QUERY = gql`
   }
 `;
 
-const Header = () => {
+const Header = ({handleCartClick}) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { data, loading, error } = useQuery(CATEGORY_QUERY, {
@@ -67,7 +68,10 @@ const Header = () => {
                 </div>
             </div>
 
-            <div className="Header-cart">
+            <div
+                className="Header-cart"
+                onClick={handleCartClick}
+            >
                 <div className="Header-cart-img">
                     <img src="/images/cart-black.svg" alt="Cart"/>
                 </div>

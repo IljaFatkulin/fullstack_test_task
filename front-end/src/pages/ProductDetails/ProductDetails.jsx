@@ -8,6 +8,7 @@ const ProductDetails = () => {
     const params = useParams();
     const { id } = params;
     const [selectedImage, setSelectedImage] = useState({id: 0, url: ''});
+    const [attributeValues, setAttributeValues] = useState([]);
 
     const PRODUCTS_QUERY = gql`
       {
@@ -43,6 +44,13 @@ const ProductDetails = () => {
     const { data, loading, error } = useQuery(PRODUCTS_QUERY, {
         onCompleted: data => {
             setSelectedImage({id: 0, url: data.products[0].gallery[0]});
+            // console.log(data.products[0].attributes);
+
+            const modifiedAttributes = data.products[0].attributes.map(attribute => {
+                return {id: attribute.id, name: attribute.name, type: attribute.type, selectedValue: {}}
+            });
+
+            setAttributeValues(modifiedAttributes);
         }
     });
     if(loading) return <></>;
@@ -66,6 +74,21 @@ const ProductDetails = () => {
         } else {
             setSelectedImage({id: gallery.length - 1, url: gallery[gallery.length - 1]});
         }
+    };
+
+    const handleAttributeClick = (attributeId, item) => {
+        // console.log(attributeId);
+        // console.log(item);
+        const modifiedAttributes = attributeValues.map(attribute => {
+            if(attribute.id === attributeId) {
+                return {...attribute, selectedValue: item};
+            }
+
+            return attribute;
+        });
+
+        setAttributeValues(modifiedAttributes);
+        console.log(modifiedAttributes);
     };
 
     return (
@@ -116,18 +139,33 @@ const ProductDetails = () => {
                                     ?
                                     attribute.items.map(item =>
                                         <div
-                                            className="ProductDetails-info-attributes-attribute-items-item ProductDetails-info-attributes-attribute-items-item_swatch"
+                                            className={`
+                                                ProductDetails-info-attributes-attribute-items-item 
+                                                ProductDetails-info-attributes-attribute-items-item_swatch
+                                                ${attributeValues.find(item => item.id === attribute.id)?.selectedValue?.id === item.id && 'ProductDetails-info-attributes-attribute-items-item_swatch_selected'}
+                                            `}
                                             key={item.id}
                                             style={{
                                                 background: item.value
+                                            }}
+                                            onClick={() => {
+                                                handleAttributeClick(attribute.id, item)
                                             }}
                                         />
                                     )
                                     :
                                     attribute.items.map(item =>
                                         <div
-                                            className="ProductDetails-info-attributes-attribute-items-item ProductDetails-info-attributes-attribute-items-item_text"
+                                            className={`
+                                                ProductDetails-info-attributes-attribute-items-item 
+                                                ProductDetails-info-attributes-attribute-items-item_text
+                                                ${attributeValues.find(item => item.id === attribute.id)?.selectedValue?.id === item.id && 'ProductDetails-info-attributes-attribute-items-item_text_selected'}
+                                            `}
+                                            // className="ProductDetails-info-attributes-attribute-items-item ProductDetails-info-attributes-attribute-items-item_text"
                                             key={item.id}
+                                            onClick={() => {
+                                                handleAttributeClick(attribute.id, item)
+                                            }}
                                         >
                                             {item.value}
                                         </div>

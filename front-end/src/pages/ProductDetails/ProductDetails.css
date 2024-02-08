@@ -1,10 +1,8 @@
 .ProductDetails {
   display: flex;
   flex-direction: row;
-  border: 1px solid black;
 }
 .ProductDetails-gallery {
-  border: 1px solid black;
   width: 700px;
   height: 480px;
   display: flex;
@@ -12,12 +10,10 @@
   margin-right: 110px;
 }
 .ProductDetails-gallery-images {
-  border: 1px solid green;
   display: flex;
   flex-direction: column;
 }
 .ProductDetails-gallery-images img {
-  border: 1px solid red;
   max-width: 80px;
   max-height: 80px;
   margin-bottom: 20px;
@@ -27,7 +23,6 @@
 }
 .ProductDetails-gallery-selectedImage {
   margin-left: 40px;
-  border: 1px solid green;
   width: 575px;
   height: 480px;
   display: flex;
@@ -36,7 +31,6 @@
   position: relative;
 }
 .ProductDetails-gallery-selectedImage img {
-  border: 1px solid red;
   max-width: 575px;
   max-height: 480px;
 }
@@ -63,7 +57,6 @@
   border: 0;
 }
 .ProductDetails-info {
-  border: 1px solid yellow;
   width: 300px;
 }
 .ProductDetails-info-attributeTitle {
@@ -71,19 +64,37 @@
   font-size: 18px;
 }
 .ProductDetails-info-name {
-  margin-top: 0;
+  margin-bottom: 30px;
   font-size: 30px;
   font-weight: 600;
 }
 .ProductDetails-info-attributes-attribute-items {
+  margin-top: 10px;
+  margin-bottom: 30px;
   display: flex;
+}
+.ProductDetails-info-attributes-attribute-items-item {
+  cursor: pointer;
 }
 .ProductDetails-info-attributes-attribute-items-item_swatch {
   height: 35px;
   width: 35px;
+  margin-right: 8px;
+  transition: border 0.3s;
+}
+.ProductDetails-info-attributes-attribute-items-item_swatch_selected {
+  position: relative;
+}
+.ProductDetails-info-attributes-attribute-items-item_swatch_selected::before {
+  content: "";
+  position: absolute;
+  border: 2px solid #5ECE7B;
+  padding: 19.5px;
+  top: -4px;
+  left: -4px;
 }
 .ProductDetails-info-attributes-attribute-items-item_text {
-  border: 1px solid black;
+  border: 1px solid #1D1F22;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -91,15 +102,22 @@
   min-width: 60px;
   margin-right: 12px;
 }
+.ProductDetails-info-attributes-attribute-items-item_text_selected {
+  background: #1D1F22;
+  color: #FFFFFF;
+}
 .ProductDetails-info-price {
+  margin-top: 10px;
   font-weight: 700;
   font-size: 24px;
   display: flex;
+  margin-bottom: 20px;
 }
 .ProductDetails-info-price-amount {
   margin-top: 3px;
 }
 .ProductDetails-info-button {
+  margin-bottom: 40px;
   width: 100%;
   height: 52px;
   display: flex;
