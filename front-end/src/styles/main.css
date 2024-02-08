@@ -31,4 +31,14 @@ code {
   box-sizing: border-box;
 }
 
+button {
+  border: 0;
+  cursor: pointer;
+}
+
+button {
+  background: #5ECE7B;
+  color: #FFFFFF;
+}
+
 /*# sourceMappingURL=main.css.map */

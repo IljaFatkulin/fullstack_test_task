@@ -1,5 +1,5 @@
 import Header from "./components/Header/Header";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import Loader from "./components/Loader/Loader";
 import {BrowserRouter} from "react-router-dom";
 import AppRouter from "./components/AppRouter";

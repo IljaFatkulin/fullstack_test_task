@@ -24,6 +24,7 @@ class OrderResolver
      */
     public function resolve($root, $args): array
     {
+//        var_dump($args);
         try {
             return $this->orderService->createOrder($args['customer_email'], $args['products']);
         } catch (ProductOutOfStockException $e) {

@@ -1,61 +1,44 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import './ProductDetails.css';
-import {useParams} from "react-router-dom";
-import {gql, useQuery} from "@apollo/client";
+import {useNavigate, useParams} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {addItemToCart, increaseItemCount} from "../../redux/actions/cartActions";
+import productService from "../../api/productService";
 
 const ProductDetails = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const cart = useSelector(state => state.cart.items);
     const params = useParams();
     const { id } = params;
     const [selectedImage, setSelectedImage] = useState({id: 0, url: ''});
-    const [attributeValues, setAttributeValues] = useState([]);
+    const [selectedAttributeValues, setSelectedAttributeValues] = useState([]);
+    const [errorMessage, setErrorMessage] = useState(null);
+    const [product, setProduct] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
 
-    const PRODUCTS_QUERY = gql`
-      {
-        products(id: "${id}") {
-          id,
-          name,
-          inStock,
-          gallery,
-          description,
-          category,
-          attributes {
-           id,
-           items {
-            displayValue,
-            value,
-            id
-           },
-           name,
-           type
-          }
-          brand,
-          prices {
-           amount,
-           currency {
-            label,
-            symbol
-           }
-          }
-         }
-      }
-    `;
+    useEffect(() => {
+        productService.getProduct(id)
+            .then(response => {
+                if (!response) {
+                    navigate('/notfound');
+                }
 
-    const { data, loading, error } = useQuery(PRODUCTS_QUERY, {
-        onCompleted: data => {
-            setSelectedImage({id: 0, url: data.products[0].gallery[0]});
-            // console.log(data.products[0].attributes);
+                setSelectedImage({id: 0, url: response.gallery[0]});
 
-            const modifiedAttributes = data.products[0].attributes.map(attribute => {
-                return {id: attribute.id, name: attribute.name, type: attribute.type, selectedValue: {}}
-            });
+                const modifiedAttributes = response.attributes.map(attribute => {
+                    return {id: attribute.id, name: attribute.name, type: attribute.type, selectedValue: {}, items: attribute.items}
+                });
 
-            setAttributeValues(modifiedAttributes);
-        }
-    });
-    if(loading) return <></>;
-    if(error) console.log(error);
-    const product = data.products[0];
+                setSelectedAttributeValues(modifiedAttributes);
+                setProduct(response);
+                setIsLoading(false);
+            })
+    }, []);
+
+    if(isLoading) return <></>;
+
     const { gallery, attributes } = product;
 
     const handleClickArrowRight = () => {
@@ -77,9 +60,7 @@ const ProductDetails = () => {
     };
 
     const handleAttributeClick = (attributeId, item) => {
-        // console.log(attributeId);
-        // console.log(item);
-        const modifiedAttributes = attributeValues.map(attribute => {
+        const modifiedAttributes = selectedAttributeValues.map(attribute => {
             if(attribute.id === attributeId) {
                 return {...attribute, selectedValue: item};
             }
@@ -87,8 +68,62 @@ const ProductDetails = () => {
             return attribute;
         });
 
-        setAttributeValues(modifiedAttributes);
-        console.log(modifiedAttributes);
+        setSelectedAttributeValues(modifiedAttributes);
+    };
+
+    const generateUniqueId = (productId, selectedAttributes) => {
+        return productId + JSON.stringify(selectedAttributes);
+    };
+
+
+    const handleAddToCart = () => {
+        setErrorMessage(null);
+        let allAttributesAreSelected = true;
+        for (const item of selectedAttributeValues) {
+            if(Object.keys(item.selectedValue).length === 0) {
+                allAttributesAreSelected = false;
+                setErrorMessage("* All attributes must be selected")
+                break;
+            }
+        }
+
+        if(allAttributesAreSelected) {
+            const updatedProduct = {
+                id: generateUniqueId(product.id, selectedAttributeValues),
+                sku: product.id,
+                name: product.name,
+                currency: product.prices[0].currency.symbol,
+                price: product.prices[0].amount,
+                photo: product.gallery[0],
+                attributes: selectedAttributeValues
+            }
+
+            const existingProduct = cart.find((item) => {
+                return item.id === updatedProduct.id
+            })
+
+            if(existingProduct) {
+                increaseItemCount(updatedProduct.id)(dispatch);
+            } else {
+                addItemToCart(updatedProduct)(dispatch);
+            }
+        }
+    };
+
+    const renderErrorMessage = () => {
+        if(errorMessage) {
+            return (
+                <div
+                    className="ProductDetails-info-errorMessage"
+                >
+                    {errorMessage}
+                </div>
+            );
+        }
+
+        return (
+            <></>
+        );
     };
 
     return (
@@ -142,7 +177,7 @@ const ProductDetails = () => {
                                             className={`
                                                 ProductDetails-info-attributes-attribute-items-item 
                                                 ProductDetails-info-attributes-attribute-items-item_swatch
-                                                ${attributeValues.find(item => item.id === attribute.id)?.selectedValue?.id === item.id && 'ProductDetails-info-attributes-attribute-items-item_swatch_selected'}
+                                                ${selectedAttributeValues.find(item => item.id === attribute.id)?.selectedValue?.id === item.id && 'ProductDetails-info-attributes-attribute-items-item_swatch_selected'}
                                             `}
                                             key={item.id}
                                             style={{
@@ -159,7 +194,7 @@ const ProductDetails = () => {
                                             className={`
                                                 ProductDetails-info-attributes-attribute-items-item 
                                                 ProductDetails-info-attributes-attribute-items-item_text
-                                                ${attributeValues.find(item => item.id === attribute.id)?.selectedValue?.id === item.id && 'ProductDetails-info-attributes-attribute-items-item_text_selected'}
+                                                ${selectedAttributeValues.find(item => item.id === attribute.id)?.selectedValue?.id === item.id && 'ProductDetails-info-attributes-attribute-items-item_text_selected'}
                                             `}
                                             // className="ProductDetails-info-attributes-attribute-items-item ProductDetails-info-attributes-attribute-items-item_text"
                                             key={item.id}
@@ -186,9 +221,15 @@ const ProductDetails = () => {
                     </div>
                 </div>
 
-                <div className="ProductDetails-info-button">
-                    ADD TO CART
-                </div>
+                { renderErrorMessage() }
+
+                <button
+                    disabled={!product.inStock}
+                    className={`ProductDetails-info-button ${!product.inStock ? 'ProductDetails-info-button_disabled' : ''}`}
+                    onClick={handleAddToCart}
+                >
+                    {product.inStock ? 'ADD TO CART' : 'OUT OF STOCK'}
+                </button>
 
                 <div
                     className="ProductDetails-info-description"

@@ -1,52 +1,48 @@
 import React, {useEffect, useState} from 'react';
-import {gql, useQuery} from "@apollo/client";
 import {useDispatch} from "react-redux";
 import {setLoading} from "../../redux/actions/loaderActions";
 
 import './Header.css';
 import {useNavigate} from "react-router-dom";
-import Cart from "../Cart/Cart";
-
-const CATEGORY_QUERY = gql`
-  {
-    categories {
-      name
-    },
-  }
-`;
+import categoryService from "../../api/categoryService";
 
 const Header = ({handleCartClick}) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { data, loading, error } = useQuery(CATEGORY_QUERY, {
-        onCompleted: data => {
-            if(window.location.href === 'http://localhost:3000/') {
-                handleCategoryChange(data.categories[0].name)
-            }
-        }
-    });
+    const [categories, setCategories] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        categoryService.getCategories()
+            .then(response => {
+                if(window.location.pathname === '/') {
+                    handleCategoryChange(response[0].name)
+                }
+                setCategories(response);
+                setIsLoading(false);
+        });
+    }, []);
+
+
     const [selectedCategory, setSelectedCategory] = useState(null);
 
     useEffect(() => {
-        const currentUrl = window.location.href.replace('http://localhost:3000/', '');
-        if(currentUrl.includes('categories/')) {
-            setSelectedCategory(currentUrl.replace('categories/', ''));
+        const currentPath = window.location.pathname;
+        if(currentPath.includes('/categories/')) {
+            setSelectedCategory(currentPath.replace('/categories/', ''));
         }
     }, [window.location.href]);
 
     useEffect(() => {
-        setLoading(loading)(dispatch);
-    }, [loading]);
+        setLoading(isLoading)(dispatch);
+    }, [isLoading]);
 
     const handleCategoryChange = (category) => {
         setSelectedCategory(category);
         navigate('/categories/' + category);
     };
 
-    if(loading) return <></>;
-    if(error) return <></>;
-
-    const { categories } = data;
+    if(isLoading) return <></>;
 
     return (
         <div className="Header">

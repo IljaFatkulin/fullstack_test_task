@@ -21,7 +21,14 @@ class OrderMutation extends ObjectType
                     'name' => 'Product',
                     'fields' => [
                         'product_id' => Type::nonNull(Type::string()),
-                        'quantity' => Type::nonNull(Type::int())
+                        'quantity' => Type::nonNull(Type::int()),
+                        'attributes' => Type::nonNull(Type::listOf(new InputObjectType([
+                            'name' => 'ProductAttribute',
+                            'fields' => [
+                                'attribute_code' => Type::nonNull(Type::string()),
+                                'value_code' => Type::nonNull(Type::string()),
+                            ],
+                        ]))),
                     ]
                 ]))),
             ],

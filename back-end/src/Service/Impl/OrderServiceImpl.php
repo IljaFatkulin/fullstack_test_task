@@ -33,7 +33,7 @@ class OrderServiceImpl implements OrderService
         $productsArrayToSave = [];
         foreach ($inputProducts as $product) {
             $skuList[] = $product['product_id'];
-            $productsArrayToSave[$product['product_id']] = ['id' => -1, 'quantity' => $product['quantity']];
+            $productsArrayToSave[$product['product_id']] = ['id' => -1, 'quantity' => $product['quantity'], 'attributes' => $product['attributes']];
         }
 
         $products = $this->productRepository->findBySkuArray($skuList);

@@ -1,44 +1,33 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import {gql, useQuery} from "@apollo/client";
 
 import './Category.css';
 import ProductCard from "../../components/ProductCard/ProductCard";
 import {useDispatch} from "react-redux";
 import {setLoading} from "../../redux/actions/loaderActions";
+import productService from "../../api/productService";
 
 const Category = () => {
     const params = useParams();
     const dispatch = useDispatch();
     const {category} = params;
     const capitalizedCategory = category.charAt(0).toUpperCase() + category.slice(1);
+    const [products, setProducts] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const PRODUCTS_QUERY = gql`
-      {
-        products(categoryName: "${category}") {
-          id,
-          name,
-          inStock,
-          gallery,
-          prices {
-           amount,
-           currency {
-            label,
-            symbol
-           }
-          }
-         }
-      }
-    `;
-
-    const { data, loading, error } = useQuery(PRODUCTS_QUERY);
     useEffect(() => {
-        setLoading(loading)(dispatch);
-    }, [loading])
-    if(loading) return <></>;
-    if(error) console.log(error);
+        productService.getProducts(category)
+            .then(response => {
+                setProducts(response);
+                setIsLoading(false);
+            })
+    }, []);
 
-    const { products } = data;
+    useEffect(() => {
+        setLoading(isLoading)(dispatch);
+    }, [isLoading])
+
+    if(isLoading) return <></>;
 
     return (
         <div className="Category">

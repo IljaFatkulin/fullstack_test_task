@@ -123,7 +123,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #5ECE7B;
   color: #FFFFFF;
   font-weight: 600;
   font-size: 16px;
@@ -131,8 +130,18 @@
   cursor: pointer;
   transition: 0.4s;
 }
-.ProductDetails-info-button:hover {
+.ProductDetails-info-button:hover:not(.ProductDetails-info-button_disabled) {
   background: #489f5e;
+}
+.ProductDetails-info-button_disabled {
+  background: #8a8a8a;
+  cursor: default;
+}
+.ProductDetails-info-errorMessage {
+  color: #ff0000;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 10px;
 }
 
 /*# sourceMappingURL=ProductDetails.css.map */

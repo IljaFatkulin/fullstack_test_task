@@ -16,7 +16,6 @@ const ProductCard = ({product}) => {
             className="ProductCard"
             onClick={handleClick}
         >
-            {/*<div className={`ProductCard-imageContainer ${isInStock ? '' : 'ProductCard-imageContainer_outOfStock'}` }>*/}
             <div className="ProductCard-imageContainer">
                 {!isInStock &&
                     <div className="ProductCard-imageContainer_outOfStock">

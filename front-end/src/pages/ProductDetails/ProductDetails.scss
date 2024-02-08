@@ -165,7 +165,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: $color-primary;
       color: $color-white;
       font-weight: 600;
       font-size: 16px;
@@ -173,9 +172,21 @@
       cursor: pointer;
       transition: 0.4s;
 
-      &:hover {
+      &:hover:not(&_disabled) {
         background: $color-primary_hover;
       }
+
+      &_disabled {
+        background: $color-gray;
+        cursor: default;
+      }
+    }
+
+    &-errorMessage {
+      color: $color-red;
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 10px;
     }
 
     &-description {

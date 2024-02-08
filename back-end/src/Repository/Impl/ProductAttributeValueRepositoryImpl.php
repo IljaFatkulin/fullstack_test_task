@@ -22,7 +22,7 @@ class ProductAttributeValueRepositoryImpl extends AbstractRepository implements 
     {
         $stmt = $this->connection->prepare("
             SELECT 
-                a.name, a.code AS attribute_code, t.type, av.code AS attribute_value_code, av.display_value, av.value
+                a.id as attribute_id, a.name, a.code AS attribute_code, t.id as type_id, t.type, av.id as attribute_value_id, av.code AS attribute_value_code, av.display_value, av.value
             FROM products_attributes_values pav
             JOIN products p 
                 ON pav.product_id = p.id
@@ -53,9 +53,9 @@ class ProductAttributeValueRepositoryImpl extends AbstractRepository implements 
      */
     protected function convertDataToObject($data): ProductAttributeValue
     {
-        $type = new AttributeType(null, $data['type']);
-        $attribute = new Attribute(null, $data['attribute_code'], $type, $data['name']);
-        $attributeValue = new AttributeValue(null, $data['attribute_value_code'], $data['display_value'], $data['value']);
+        $type = new AttributeType($data['type_id'], $data['type']);
+        $attribute = new Attribute($data['attribute_id'], $data['attribute_code'], $type, $data['name']);
+        $attributeValue = new AttributeValue($data['attribute_value_id'], $data['attribute_value_code'], $data['display_value'], $data['value']);
         return new ProductAttributeValue(null, null, $attribute, $attributeValue);
     }
 }
