@@ -3,10 +3,8 @@
 .ProductDetails {
   display: flex;
   flex-direction: row;
-  //border: 1px solid black;
 
   &-gallery {
-    //border: 1px solid black;
     width:700px;
     height: 480px;
     display: flex;
@@ -14,15 +12,15 @@
     margin-right: 110px;
 
     &-images {
-      //border: 1px solid green;
       display: flex;
       flex-direction: column;
-      //display: flex;
-      //justify-content: center;
-      //align-items: center;
+
+      & {
+        overflow-y: auto;
+      }
 
       & img {
-        //border: 1px solid red;
+        cursor: pointer;
         max-width: 80px;
         max-height: 80px;
         margin-bottom: 20px;
@@ -35,7 +33,6 @@
 
     &-selectedImage {
       margin-left: 40px;
-      //border: 1px solid green;
       width: 575px;
       height: 480px;
       display: flex;
@@ -44,11 +41,8 @@
       position: relative;
 
       & img {
-        //border: 1px solid red;
         max-width: 575px;
-        //width: 575px;
         max-height: 480px;
-        //height: 480px;
       }
 
       &-arrow {
@@ -80,7 +74,6 @@
   }
 
   &-info {
-    //border: 1px solid yellow;
     width: 300px;
 
     &-attributeTitle {
@@ -97,7 +90,6 @@
     &-attributes {
 
       &-attribute {
-        //margin-bottom: 10px;
 
         &-items {
           margin-top: 10px;
@@ -180,13 +172,6 @@
         background: $color-gray;
         cursor: default;
       }
-    }
-
-    &-errorMessage {
-      color: $color-red;
-      font-size: 20px;
-      font-weight: 600;
-      margin-bottom: 10px;
     }
 
     &-description {

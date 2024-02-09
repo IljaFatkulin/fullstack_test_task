@@ -7,11 +7,15 @@ const defaultStore = {
 export const cartReducer = (state = defaultStore, action) => {
     switch (action.type) {
         case "ADD_ITEM":
-            const price1 = Math.round((parseFloat(action.payload.price.replace(',', '')) + Number.EPSILON) * 100) / 100;
-            return {...state, items: [...state.items, action.payload], totalCount: state.totalCount + 1, totalAmount: state.totalAmount + price1}
+            const priceToAdd = parseFloat(action.payload.price.replace(',', ''));
+            return {
+                ...state,
+                items: [...state.items, action.payload],
+                totalCount: state.totalCount + 1,
+                totalAmount: formatTotalAmount(state.totalAmount + priceToAdd)
+            }
         case "INCREASE_ITEM_COUNT":
-            const price2 = state.items.find(item => item.id === action.payload).price;
-            const formattedPrice2 = Math.round((parseFloat(price2.replace(',', '')) + Number.EPSILON) * 100) / 100;
+            const priceToIncrease = parseFloat(state.items.find(item => item.id === action.payload).price.replace(',', ''));
             return {
                 ...state,
                 items: state.items.map(item => {
@@ -24,11 +28,10 @@ export const cartReducer = (state = defaultStore, action) => {
                     return item;
                 }),
                 totalCount: state.totalCount + 1,
-                totalAmount: state.totalAmount + formattedPrice2
+                totalAmount: formatTotalAmount(state.totalAmount + priceToIncrease)
             }
         case "DECREASE_ITEM_COUNT":
-            const price3 = state.items.find(item => item.id === action.payload).price;
-            const formattedPrice3 = Math.round((parseFloat(price3.replace(',', '')) + Number.EPSILON) * 100) / 100;
+            const priceToDecrease = parseFloat(state.items.find(item => item.id === action.payload).price.replace(',', ''));
             return {
                 ...state,
                 items: state.items.map(item => {
@@ -42,30 +45,20 @@ export const cartReducer = (state = defaultStore, action) => {
                 })
                 .filter(item => item.count > 0),
                 totalCount: state.totalCount - 1,
-                totalAmount: state.totalAmount - formattedPrice3
+                totalAmount: formatTotalAmount(state.totalAmount - priceToDecrease)
             }
-        case "CHANGE_ITEM_ATTRIBUTE_VALUE":
+        case "CLEAR_CART":
             return {
                 ...state,
-                items: state.items.map(item => {
-                    if (item.id === action.payload.productId) {
-                        return {
-                            ...item,
-                            attributes: item.attributes.map(attribute => {
-                                 if (attribute.id === action.payload.attributeId) {
-                                     return {
-                                         ...attribute,
-                                         selectedValue: action.payload.item
-                                     }
-                                 }
-                                 return attribute;
-                            })
-                        }
-                    }
-                    return item;
-                })
+                items: [],
+                totalCount: 0,
+                totalAmount: 0.00
             }
         default:
             return state;
     }
-}
+};
+
+const formatTotalAmount = (value) => {
+    return Math.round((value + Number.EPSILON) * 100) / 100;
+};

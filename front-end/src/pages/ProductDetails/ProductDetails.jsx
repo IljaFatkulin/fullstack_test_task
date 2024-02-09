@@ -3,18 +3,17 @@ import React, {useEffect, useState} from 'react';
 import './ProductDetails.css';
 import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {addItemToCart, increaseItemCount} from "../../redux/actions/cartActions";
 import productService from "../../api/productService";
+import {addProductToCart} from "../../util/CartUtil";
 
 const ProductDetails = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const cart = useSelector(state => state.cart.items);
+    const cartItems = useSelector(state => state.cart.items);
     const params = useParams();
     const { id } = params;
     const [selectedImage, setSelectedImage] = useState({id: 0, url: ''});
     const [selectedAttributeValues, setSelectedAttributeValues] = useState([]);
-    const [errorMessage, setErrorMessage] = useState(null);
     const [product, setProduct] = useState({});
     const [isLoading, setIsLoading] = useState(true);
 
@@ -71,58 +70,31 @@ const ProductDetails = () => {
         setSelectedAttributeValues(modifiedAttributes);
     };
 
-    const generateUniqueId = (productId, selectedAttributes) => {
-        return productId + JSON.stringify(selectedAttributes);
-    };
-
+    const handleImageClick = (id, image) => {
+        setSelectedImage({id: id, url: image});
+    }
 
     const handleAddToCart = () => {
-        setErrorMessage(null);
+        addProductToCart(dispatch, cartItems, product, selectedAttributeValues);
+    };
+
+    const renderAddToCartButton = () => {
         let allAttributesAreSelected = true;
         for (const item of selectedAttributeValues) {
             if(Object.keys(item.selectedValue).length === 0) {
                 allAttributesAreSelected = false;
-                setErrorMessage("* All attributes must be selected")
                 break;
             }
         }
 
-        if(allAttributesAreSelected) {
-            const updatedProduct = {
-                id: generateUniqueId(product.id, selectedAttributeValues),
-                sku: product.id,
-                name: product.name,
-                currency: product.prices[0].currency.symbol,
-                price: product.prices[0].amount,
-                photo: product.gallery[0],
-                attributes: selectedAttributeValues
-            }
-
-            const existingProduct = cart.find((item) => {
-                return item.id === updatedProduct.id
-            })
-
-            if(existingProduct) {
-                increaseItemCount(updatedProduct.id)(dispatch);
-            } else {
-                addItemToCart(updatedProduct)(dispatch);
-            }
-        }
-    };
-
-    const renderErrorMessage = () => {
-        if(errorMessage) {
-            return (
-                <div
-                    className="ProductDetails-info-errorMessage"
-                >
-                    {errorMessage}
-                </div>
-            );
-        }
-
         return (
-            <></>
+            <button
+                disabled={!product.inStock || !allAttributesAreSelected}
+                className={`ProductDetails-info-button ${!product.inStock || !allAttributesAreSelected ? 'ProductDetails-info-button_disabled' : ''}`}
+                onClick={handleAddToCart}
+            >
+                {product.inStock ? 'ADD TO CART' : 'OUT OF STOCK'}
+            </button>
         );
     };
 
@@ -130,8 +102,8 @@ const ProductDetails = () => {
         <div className="ProductDetails">
             <div className="ProductDetails-gallery">
                 <div className="ProductDetails-gallery-images">
-                    {gallery.slice(0, 5).map(image =>
-                        <img key={image} src={image} alt="Product"/>
+                    {gallery.map((image, index) =>
+                        <img onClick={() => handleImageClick(index, image)} key={image} src={image} alt="Product"/>
                     )}
                 </div>
 
@@ -196,7 +168,6 @@ const ProductDetails = () => {
                                                 ProductDetails-info-attributes-attribute-items-item_text
                                                 ${selectedAttributeValues.find(item => item.id === attribute.id)?.selectedValue?.id === item.id && 'ProductDetails-info-attributes-attribute-items-item_text_selected'}
                                             `}
-                                            // className="ProductDetails-info-attributes-attribute-items-item ProductDetails-info-attributes-attribute-items-item_text"
                                             key={item.id}
                                             onClick={() => {
                                                 handleAttributeClick(attribute.id, item)
@@ -221,15 +192,8 @@ const ProductDetails = () => {
                     </div>
                 </div>
 
-                { renderErrorMessage() }
+                { renderAddToCartButton() }
 
-                <button
-                    disabled={!product.inStock}
-                    className={`ProductDetails-info-button ${!product.inStock ? 'ProductDetails-info-button_disabled' : ''}`}
-                    onClick={handleAddToCart}
-                >
-                    {product.inStock ? 'ADD TO CART' : 'OUT OF STOCK'}
-                </button>
 
                 <div
                     className="ProductDetails-info-description"

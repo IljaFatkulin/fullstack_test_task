@@ -21,7 +21,7 @@ const Category = () => {
                 setProducts(response);
                 setIsLoading(false);
             })
-    }, []);
+    }, [category]);
 
     useEffect(() => {
         setLoading(isLoading)(dispatch);

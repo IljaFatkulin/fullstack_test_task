@@ -6,7 +6,7 @@ const orderService = {
         const productString = JSON.stringify(products)
             .replace(/"([^"]+)":/g, '$1:');
 
-        axios.post(url, {
+        return axios.post(url, {
             query: `
                 mutation { 
                   createOrder(customer_email: "${customerEmail}", products: ${productString}) {

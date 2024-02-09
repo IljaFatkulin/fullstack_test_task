@@ -2,13 +2,32 @@ import React from 'react';
 
 import './ProductCard.css';
 import {useNavigate} from "react-router-dom";
+import productService from "../../api/productService";
+import {addProductToCart} from "../../util/CartUtil";
+import {useDispatch, useSelector} from "react-redux";
 
 const ProductCard = ({product}) => {
     const navigate = useNavigate();
     const isInStock = product.inStock;
+    const dispatch = useDispatch();
+    const cartItems = useSelector(state => state.cart.items);
 
     const handleClick = () => {
         navigate('/products/' + product.id);
+    }
+
+    const handleAddToCartClick = (e) => {
+        e.stopPropagation();
+        productService.getProduct(product.id)
+            .then(response => {
+                const selectedAttributes = response.attributes.map(attribute => {
+                    return {
+                        ...attribute,
+                        selectedValue: attribute.items[0]
+                    }
+                });
+                addProductToCart(dispatch, cartItems, response, selectedAttributes);
+            });
     }
 
     return (
@@ -36,9 +55,12 @@ const ProductCard = ({product}) => {
             </div>
 
             {isInStock &&
-                <div className="ProductCard-cart">
+                <button
+                    className="ProductCard-cart"
+                    onClick={handleAddToCartClick}
+                >
                     <img src="/images/cart-white.svg" alt="Cart"/>
-                </div>
+                </button>
             }
         </div>
     );

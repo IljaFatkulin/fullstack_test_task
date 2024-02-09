@@ -103,7 +103,7 @@
               gap: 8px;
 
               &-item {
-                cursor: pointer;
+                user-select: none;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -164,8 +164,13 @@
       margin-top: 32px;
       margin-bottom: 32px;
 
-      &:hover {
+      &:hover:not(&_disabled) {
         background: $color-primary_hover;
+      }
+
+      &_disabled {
+        cursor: default;
+        background: $color-gray;
       }
     }
   }

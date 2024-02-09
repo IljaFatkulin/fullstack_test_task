@@ -2,7 +2,7 @@ import React from 'react';
 
 import './Cart.css';
 import {useDispatch, useSelector} from "react-redux";
-import {changeItemAttributeValue, decreaseItemCount, increaseItemCount} from "../../redux/actions/cartActions";
+import {clearCart, decreaseItemCount, increaseItemCount} from "../../redux/actions/cartActions";
 import orderService from "../../api/orderService";
 
 const Cart = ({setIsCartVisible}) => {
@@ -28,39 +28,24 @@ const Cart = ({setIsCartVisible}) => {
         decreaseItemCount(id)(dispatch);
     };
 
-    const handleAttributeClick = (productId, attributeId, item) => {
-        changeItemAttributeValue(productId, attributeId, item)(dispatch);
-    };
-
     const renderTotal = () => {
-        if (totalCount > 0) {
-            return (
-                <div className="Cart-Content-Total">
-                    <p>Total</p>
-                    <p>{cart && cart.length ? cart[0].currency : ''}{totalAmount}</p>
-                </div>
-            );
-        }
-
         return (
-            <></>
+            <div className="Cart-Content-Total">
+                <p>Total</p>
+                <p>{cart && cart.length ? cart[0].currency : ''}{totalAmount}</p>
+            </div>
         );
     };
 
     const renderPlaceOrderButton = () => {
-        if (totalCount > 0) {
-            return (
-                <button
-                    className="Cart-Content-PlaceOrder"
-                    onClick={handlePlaceOrder}
-                >
-                    PLACE ORDER
-                </button>
-            );
-        }
-
         return (
-            <></>
+            <button
+                disabled={totalCount < 1}
+                className={`Cart-Content-PlaceOrder ${totalCount < 1 ? 'Cart-Content-PlaceOrder_disabled' : ''}`}
+                onClick={handlePlaceOrder}
+            >
+                PLACE ORDER
+            </button>
         );
     }
 
@@ -81,7 +66,10 @@ const Cart = ({setIsCartVisible}) => {
 
         const customerEmail = "ilja@gmail.com";
 
-        orderService.createOrder(customerEmail, products);
+        orderService.createOrder(customerEmail, products)
+            .then(() => {
+                clearCart()(dispatch);
+            });
     }
 
     return (
@@ -132,9 +120,6 @@ const Cart = ({setIsCartVisible}) => {
                                                             style={{
                                                                 background: item.value
                                                             }}
-                                                            onClick={() => {
-                                                                handleAttributeClick(product.id, attribute.id, item)
-                                                            }}
                                                         />
                                                     )
                                                     :
@@ -146,9 +131,6 @@ const Cart = ({setIsCartVisible}) => {
                                                                 ${attribute.selectedValue.id === item.id && 'Cart-Content-Items-item-info-attribute-items-item_text_selected'}
                                                             `}
                                                             key={item.id}
-                                                            onClick={() => {
-                                                                handleAttributeClick(product.id, attribute.id, item)
-                                                            }}
                                                         >
                                                             {item.value}
                                                         </div>

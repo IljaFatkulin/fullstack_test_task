@@ -13,7 +13,11 @@
   display: flex;
   flex-direction: column;
 }
+.ProductDetails-gallery-images {
+  overflow-y: auto;
+}
 .ProductDetails-gallery-images img {
+  cursor: pointer;
   max-width: 80px;
   max-height: 80px;
   margin-bottom: 20px;
@@ -136,12 +140,6 @@
 .ProductDetails-info-button_disabled {
   background: #8a8a8a;
   cursor: default;
-}
-.ProductDetails-info-errorMessage {
-  color: #ff0000;
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 10px;
 }
 
 /*# sourceMappingURL=ProductDetails.css.map */
