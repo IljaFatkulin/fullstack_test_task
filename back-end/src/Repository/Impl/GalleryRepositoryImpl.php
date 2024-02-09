@@ -62,6 +62,6 @@ class GalleryRepositoryImpl extends AbstractRepository implements GalleryReposit
     protected function convertDataToObject($data): ProductImage
     {
         $product = new Product($data['product_id']);
-        return new ProductImage($data['id'], $product, $data['image_url']);
+        return new ProductImage((int)$data['id'], $product, $data['image_url']);
     }
 }

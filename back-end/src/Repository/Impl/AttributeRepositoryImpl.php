@@ -27,6 +27,6 @@ class AttributeRepositoryImpl extends AbstractRepository implements AttributeRep
 
     protected function convertDataToObject($data)
     {
-        return new Attribute($data['id'], $data['code'], null, $data['name']);
+        return new Attribute((int)$data['id'], $data['code'], null, $data['name']);
     }
 }

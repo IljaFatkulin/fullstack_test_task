@@ -53,9 +53,9 @@ class ProductAttributeValueRepositoryImpl extends AbstractRepository implements 
      */
     protected function convertDataToObject($data): ProductAttributeValue
     {
-        $type = new AttributeType($data['type_id'], $data['type']);
-        $attribute = new Attribute($data['attribute_id'], $data['attribute_code'], $type, $data['name']);
-        $attributeValue = new AttributeValue($data['attribute_value_id'], $data['attribute_value_code'], $data['display_value'], $data['value']);
+        $type = new AttributeType((int)$data['type_id'], $data['type']);
+        $attribute = new Attribute((int)$data['attribute_id'], $data['attribute_code'], $type, $data['name']);
+        $attributeValue = new AttributeValue((int)$data['attribute_value_id'], $data['attribute_value_code'], $data['display_value'], $data['value']);
         return new ProductAttributeValue(null, null, $attribute, $attributeValue);
     }
 }
