@@ -45,8 +45,8 @@ class PriceRepositoryImpl extends AbstractRepository implements PriceRepository
      */
     protected function convertDataToObject($data): Price
     {
-        $currency = new Currency($data['currency_id'], $data['label'], $data['symbol']);
-        return new Price($data['price_id'], round((float)$data['amount'], 2), $currency);
+        $currency = new Currency((int)$data['currency_id'], $data['label'], $data['symbol']);
+        return new Price((int)$data['price_id'], round((float)$data['amount'], 2), $currency);
     }
 
 }
