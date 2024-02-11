@@ -18,6 +18,3 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv->load();
 
 include ('./graphql.php');
-
-$a = new \App\Repository\Impl\CategoryRepositoryImpl();
-var_dump($a->findAll());

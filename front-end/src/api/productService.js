@@ -61,6 +61,7 @@ const productService = {
                 }
             `,
         }).then(response => {
+            console.log(response)
             return response.data.data.products[0];
         });
     }

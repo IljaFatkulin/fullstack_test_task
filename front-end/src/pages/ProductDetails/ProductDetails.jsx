@@ -5,6 +5,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import productService from "../../api/productService";
 import {addProductToCart} from "../../util/CartUtil";
+import {Parser} from "html-to-react";
 
 const ProductDetails = () => {
     const navigate = useNavigate();
@@ -197,10 +198,9 @@ const ProductDetails = () => {
 
                 <div
                     className="ProductDetails-info-description"
-                    dangerouslySetInnerHTML={{
-                        __html: product.description.replace(/(\\n)/g, '<br/>')
-                    }}
-                />
+                >
+                    {Parser().parse(product.description.replace(/(\\n)/g, '<br/>'))}
+                </div>
 
             </div>
         </div>

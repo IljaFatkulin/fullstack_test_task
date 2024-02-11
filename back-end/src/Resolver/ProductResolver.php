@@ -83,7 +83,6 @@ class ProductResolver
      */
     private function convertObjectToResponse(Product $product): array
     {
-        var_dump($product);
         return [
             'id' => $product->getSku(),
             'name' => $product->getName(),
